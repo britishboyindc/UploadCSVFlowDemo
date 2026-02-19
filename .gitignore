@@ -5,6 +5,9 @@
 # Salesforce cache
 .sf/
 .sfdx/
+
+# Salesforce profiles (managed outside version control)
+**/profiles/
 .localdevserver/
 deploy-options.json
 
