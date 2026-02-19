@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Processing_Status__c</fullName>
+    <label>Processing Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>New</fullName>
+                <default>true</default>
+                <label>New</label>
+            </value>
+            <value>
+                <fullName>Processed</fullName>
+                <default>false</default>
+                <label>Processed</label>
+            </value>
+            <value>
+                <fullName>Error in Processing</fullName>
+                <default>false</default>
+                <label>Error in Processing</label>
+            </value>
+            <value>
+                <fullName>Retry</fullName>
+                <default>false</default>
+                <label>Retry</label>
+            </value>
+            <value>
+                <fullName>Review</fullName>
+                <default>false</default>
+                <label>Review</label>
+            </value>
+            <value>
+                <fullName>Spam</fullName>
+                <default>false</default>
+                <label>Spam</label>
+            </value>
+            <value>
+                <fullName>Archive</fullName>
+                <default>false</default>
+                <label>Archive</label>
+            </value>
+            <value>
+                <fullName>Delayed Processing</fullName>
+                <default>false</default>
+                <label>Delayed Processing</label>
+            </value>
+            <value>
+                <fullName>Retry Delayed Processing</fullName>
+                <default>false</default>
+                <label>Retry Delayed Processing</label>
+            </value>
+            <value>
+                <fullName>Create New Contact</fullName>
+                <default>false</default>
+                <label>Create New Contact</label>
+            </value>
+            <value>
+                <fullName>Contact Matched</fullName>
+                <default>false</default>
+                <label>Contact Matched</label>
+            </value>
+            <value>
+                <fullName>Created New Contact</fullName>
+                <default>false</default>
+                <label>Created New Contact</label>
+            </value>
+            <value>
+                <fullName>Updated Current Contact</fullName>
+                <default>false</default>
+                <label>Updated Current Contact</label>
+            </value>
+            <value>
+                <fullName>Marketing Activity Created</fullName>
+                <default>false</default>
+                <label>Marketing Activity Created</label>
+            </value>
+            <value>
+                <fullName>List Membership Processed</fullName>
+                <default>false</default>
+                <label>List Membership Processed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

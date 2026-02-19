@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>List_Upload__c</fullName>
+    <label>List Upload</label>
+    <referenceTo>List_Upload__c</referenceTo>
+    <relationshipLabel>List Upload Staging</relationshipLabel>
+    <relationshipName>List_Upload_Staging</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

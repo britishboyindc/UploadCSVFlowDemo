@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Target_Object__c</fullName>
+    <description>Target Object for the Field to load data into</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Target Object for the Field to load data into</inlineHelpText>
+    <label>Target Object</label>
+    <referenceTo>EntityDefinition</referenceTo>
+    <relationshipLabel>CSV_Column_Mapping</relationshipLabel>
+    <relationshipName>CSV_Column_Mapping</relationshipName>
+    <required>false</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>
