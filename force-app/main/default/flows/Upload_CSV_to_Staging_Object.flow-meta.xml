@@ -5,13 +5,13 @@
         <label>Get Default Field Mappings</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>CsvColumnMapping</actionName>
+        <actionName>listupload_ColumnMapping</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Review_Default_Field_Mappings</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <nameSegment>CsvColumnMapping</nameSegment>
+        <nameSegment>listupload_ColumnMapping</nameSegment>
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
@@ -20,11 +20,14 @@
         <label>Parse CSV Via Apex</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>CsvParser</actionName>
+        <actionName>listupload_CSVParser</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Parse_Uploaded_Files</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>ParsingError</targetReference>
+        </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>batchId</name>
@@ -44,7 +47,7 @@
                 <elementReference>Parse_Uploaded_Files</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>CsvParser</nameSegment>
+        <nameSegment>listupload_CSVParser</nameSegment>
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
@@ -134,6 +137,30 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
+        <name>ParsingError</name>
+        <label>ParsingError</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>FlowFault</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Review_Default_Field_Mappings</name>
         <label>Review Default Field Mappings</label>
         <locationX>0</locationX>
@@ -147,7 +174,7 @@
         <fields>
             <name>Default_Field_Mappings</name>
             <dataTypeMappings>
-                <apexClass>CsvColumnMapping</apexClass>
+                <apexClass>listupload_ColumnMapping</apexClass>
                 <typeName>T</typeName>
             </dataTypeMappings>
             <extensionName>flowruntime:datatable</extensionName>
@@ -179,7 +206,7 @@
             <inputParameters>
                 <name>keyField</name>
                 <value>
-                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;CsvColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;],&quot;elementReference&quot;:&quot;Get_Default_Field_Mappings.columnHeadings&quot;}</complexValue>
+                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;listupload_ColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;],&quot;elementReference&quot;:&quot;Get_Default_Field_Mappings.columnHeadings&quot;}</complexValue>
                     <complexValueType>ComplexObjectFieldDetails</complexValueType>
                 </value>
             </inputParameters>
@@ -192,7 +219,7 @@
             <inputParameters>
                 <name>columnReferences</name>
                 <value>
-                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;CsvColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;,&quot;TargetFieldName&quot;],&quot;elementReference&quot;:&quot;Get_Default_Field_Mappings.columnHeadings&quot;}</complexValue>
+                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;listupload_ColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;,&quot;TargetFieldName&quot;],&quot;elementReference&quot;:&quot;Get_Default_Field_Mappings.columnHeadings&quot;}</complexValue>
                     <complexValueType>ComplexObjectFieldDetails</complexValueType>
                 </value>
             </inputParameters>
