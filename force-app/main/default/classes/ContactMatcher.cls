@@ -45,12 +45,7 @@ public with sharing class ContactMatcher {
                                           WITH USER_MODE];
         Contact[] contacts = (List<Contact>) searchList[0];
         List<String> EmailFieldList = new List<String>{
-                'Email',
-                'npe01__HomeEmail__c',
-                'npe01__WorkEmail__c',
-                'Additional_E_mail_2__c',
-                'npe01__AlternateEmail__c',
-                'Assistant_Email__c'
+                'Email'
         };
         for (Contact c : contacts) {
             for (String sField : EmailFieldList) {

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "salesforce DX": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@salesforce/mcp@latest", "--orgs", "ListDemo1"]
+    }
+  }
+}

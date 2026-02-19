@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Default_Field_Mappings</name>
-        <label>Get Default Field Mappings</label>
+        <name>Get_Default_Fields_Mappings_New</name>
+        <label>Get Default Fields Mappings</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>listupload_ColumnMapping</actionName>
+        <actionName>CsvColumnMapping</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Review_Default_Field_Mappings</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <nameSegment>listupload_ColumnMapping</nameSegment>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>keyMappingCMD</name>
+        </inputParameters>
+        <nameSegment>CsvColumnMapping</nameSegment>
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
-        <name>Parse_CSV_Via_Apex</name>
+        <name>Parse_CSV_Via_Apex_New</name>
         <label>Parse CSV Via Apex</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <actionName>listupload_CSVParser</actionName>
+        <actionName>CsvParser</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Parse_Uploaded_Files</targetReference>
         </connector>
-        <faultConnector>
-            <targetReference>ParsingError</targetReference>
-        </faultConnector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>batchId</name>
@@ -47,7 +47,7 @@
                 <elementReference>Parse_Uploaded_Files</elementReference>
             </value>
         </inputParameters>
-        <nameSegment>listupload_CSVParser</nameSegment>
+        <nameSegment>CsvParser</nameSegment>
         <offset>0</offset>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
@@ -75,6 +75,7 @@
             <stringValue>{&quot;location&quot;:&quot;top&quot;,&quot;type&quot;:&quot;simple&quot;}</stringValue>
         </value>
     </customProperties>
+    <description>Upload CSV and Parse records into Staging Table</description>
     <environments>Default</environments>
     <interviewLabel>Upload CSV to Staging Object {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Upload CSV to Staging Object</label>
@@ -86,7 +87,7 @@
         <collectionReference>varContentIdVersionCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Parse_CSV_Via_Apex</targetReference>
+            <targetReference>Parse_CSV_Via_Apex_New</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Create_Staging_Records</targetReference>
@@ -119,47 +120,8 @@
         <connector>
             <targetReference>Review_Results_Screen</targetReference>
         </connector>
-        <inputReference>Parse_CSV_Via_Apex.newRecords</inputReference>
+        <inputReference>Parse_CSV_Via_Apex_New.newRecords</inputReference>
     </recordCreates>
-    <recordLookups>
-        <name>Get_File_Mapping_Records</name>
-        <label>Get File Mapping Records</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Upload_File</targetReference>
-        </connector>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>CSV_Column_Mapping__mdt</object>
-        <sortField>Column_Heading__c</sortField>
-        <sortOrder>Asc</sortOrder>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <screens>
-        <name>ParsingError</name>
-        <label>ParsingError</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>FlowFault</name>
-            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-            <styleProperties>
-                <verticalAlignment>
-                    <stringValue>top</stringValue>
-                </verticalAlignment>
-                <width>
-                    <stringValue>12</stringValue>
-                </width>
-            </styleProperties>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
     <screens>
         <name>Review_Default_Field_Mappings</name>
         <label>Review Default Field Mappings</label>
@@ -169,12 +131,12 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_File_Mapping_Records</targetReference>
+            <targetReference>Upload_File</targetReference>
         </connector>
         <fields>
             <name>Default_Field_Mappings</name>
             <dataTypeMappings>
-                <apexClass>listupload_ColumnMapping</apexClass>
+                <apexClass>CsvColumnMapping</apexClass>
                 <typeName>T</typeName>
             </dataTypeMappings>
             <extensionName>flowruntime:datatable</extensionName>
@@ -182,7 +144,7 @@
             <inputParameters>
                 <name>label</name>
                 <value>
-                    <stringValue>Data Table</stringValue>
+                    <stringValue>Default Field Mappings</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -200,27 +162,33 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>Get_Default_Field_Mappings.columnHeadings</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>keyField</name>
-                <value>
-                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;listupload_ColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;],&quot;elementReference&quot;:&quot;Get_Default_Field_Mappings.columnHeadings&quot;}</complexValue>
-                    <complexValueType>ComplexObjectFieldDetails</complexValueType>
+                    <elementReference>Get_Default_Fields_Mappings_New.columnHeadings</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columns</name>
                 <value>
-                    <stringValue>[{&quot;apiName&quot;:&quot;ColumnHeading&quot;,&quot;guid&quot;:&quot;column-fff7&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;ColumnHeading&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;TargetFieldName&quot;,&quot;guid&quot;:&quot;column-8a5e&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;TargetFieldName&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                    <stringValue>[{&quot;apiName&quot;:&quot;ColumnHeading&quot;,&quot;guid&quot;:&quot;column-4093&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:0,&quot;label&quot;:&quot;ColumnHeading&quot;,&quot;type&quot;:&quot;text&quot;},{&quot;apiName&quot;:&quot;TargetFieldName&quot;,&quot;guid&quot;:&quot;column-057a&quot;,&quot;editable&quot;:false,&quot;hasCustomHeaderLabel&quot;:false,&quot;customHeaderLabel&quot;:&quot;&quot;,&quot;wrapText&quot;:true,&quot;order&quot;:1,&quot;label&quot;:&quot;TargetFieldName&quot;,&quot;type&quot;:&quot;text&quot;}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>keyField</name>
+                <value>
+                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;CsvColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;],&quot;elementReference&quot;:&quot;Get_Default_Fields_Mappings_New.columnHeadings&quot;}</complexValue>
+                    <complexValueType>ComplexObjectFieldDetails</complexValueType>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnReferences</name>
                 <value>
-                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;listupload_ColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;,&quot;TargetFieldName&quot;],&quot;elementReference&quot;:&quot;Get_Default_Field_Mappings.columnHeadings&quot;}</complexValue>
+                    <complexValue>{&quot;dataType&quot;:&quot;Apex&quot;,&quot;objectType&quot;:&quot;CsvColumnMapping&quot;,&quot;fieldReferences&quot;:[&quot;ColumnHeading&quot;,&quot;TargetFieldName&quot;],&quot;elementReference&quot;:&quot;Get_Default_Fields_Mappings_New.columnHeadings&quot;}</complexValue>
                     <complexValueType>ComplexObjectFieldDetails</complexValueType>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>shouldDisplayLabel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -281,13 +249,13 @@
             <inputParameters>
                 <name>tableData</name>
                 <value>
-                    <elementReference>Parse_CSV_Via_Apex.newRecords</elementReference>
+                    <elementReference>Parse_CSV_Via_Apex_New.newRecords</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>keyField</name>
                 <value>
-                    <complexValue>{&quot;dataType&quot;:&quot;SObject&quot;,&quot;objectType&quot;:&quot;List_Upload_Staging__c&quot;,&quot;fieldReferences&quot;:[&quot;Id&quot;],&quot;elementReference&quot;:&quot;Parse_CSV_Via_Apex.newRecords&quot;}</complexValue>
+                    <complexValue>{&quot;dataType&quot;:&quot;SObject&quot;,&quot;objectType&quot;:&quot;List_Upload_Staging__c&quot;,&quot;fieldReferences&quot;:[&quot;Id&quot;],&quot;elementReference&quot;:&quot;Parse_CSV_Via_Apex_New.newRecords&quot;}</complexValue>
                     <complexValueType>ComplexObjectFieldDetails</complexValueType>
                 </value>
             </inputParameters>
@@ -300,7 +268,7 @@
             <inputParameters>
                 <name>columnReferences</name>
                 <value>
-                    <complexValue>{&quot;dataType&quot;:&quot;SObject&quot;,&quot;objectType&quot;:&quot;List_Upload_Staging__c&quot;,&quot;fieldReferences&quot;:[&quot;First_Name__c&quot;,&quot;Last_Name__c&quot;,&quot;Email_Address__c&quot;],&quot;elementReference&quot;:&quot;Parse_CSV_Via_Apex.newRecords&quot;}</complexValue>
+                    <complexValue>{&quot;dataType&quot;:&quot;SObject&quot;,&quot;objectType&quot;:&quot;List_Upload_Staging__c&quot;,&quot;fieldReferences&quot;:[&quot;First_Name__c&quot;,&quot;Last_Name__c&quot;,&quot;Email_Address__c&quot;],&quot;elementReference&quot;:&quot;Parse_CSV_Via_Apex_New.newRecords&quot;}</complexValue>
                     <complexValueType>ComplexObjectFieldDetails</complexValueType>
                 </value>
             </inputParameters>
@@ -383,7 +351,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Default_Field_Mappings</targetReference>
+            <targetReference>Get_Default_Fields_Mappings_New</targetReference>
         </connector>
     </start>
     <status>Active</status>
